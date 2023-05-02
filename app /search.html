@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/styles.css"> <!-- HÄMTA CSS-fil -->
+</head>
+<body>
+    <h1>App > Sök</h1>
+
+    <div class="search-active">
+        <br>
+        <input id="keyword" type="text" />
+        <br>
+        <button id="search">Sök</button>
+    </div>
+
+    <ul id="searchResults">
+    </ul>
+
+    <script>
+
+        const btnSearch = document.querySelector('#search');
+        const btnUpdate = document.querySelector('#btnUpdate');
+
+        btnSearch.addEventListener('click', () => {
+
+            printResults();
+        });
+
+
+        async function printResults() {
+
+            const ul = document.querySelector('#searchResults');
+
+            let data = await getResultsByKeyword();
+
+            for (const customer of data) {
+                
+                let li = document.createElement('li');
+                let a = document.createElement('a');
+                
+                a.innerText = customer.firstName;
+
+                li.appendChild(a);
+                ul.appendChild(li);
+            }
+        }
+
+        async function getResultsByKeyword() {
+
+            let keyword = document.querySelector('#keyword').value;
+
+            const options = {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json'
+            }}
+
+            let response = await fetch('http://localhost:3001/customer/search?' + new URLSearchParams({
+                keyword: keyword
+            }), options)
+            .catch(error => {
+                console.error(error);
+            });
+
+            
+            let data = await response.json();
+            
+            console.log(data)
+
+            return data;
+        };
+
+    </script>
+</body>
+</html>
