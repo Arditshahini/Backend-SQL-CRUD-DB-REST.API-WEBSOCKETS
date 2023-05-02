@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/styles.css"> <!-- HÄMTA CSS-fil -->
+</head>
+<body>
+    <h1>App > Sök</h1>
+
+    <!-- Sökformulär -->
+    <div class="search-active">
+        <br>
+        <input id="keyword" type="text" />
+        <br>
+        <button id="search">Sök</button>
+    </div>
+
+    <!-- Sökresultat -->
+    <ul id="searchResults">
+    </ul>
+
+    <!-- Redigeringsformulär -->
+    <div class="update-inactive">
+
+        <input id="customerId" type="hidden" name="customerId" />
+
+        <label for="firstName">Förnamn</label>
+        <input id="firstName" type="text" name="firstName" autofocus />
+    
+        <label for="lastName">Efternamn</label>
+        <input id="lastName" type="text" name="lastName" />
+
+        <label for="email">E-mail</label>
+        <input id="email" type="text" name="email" />
+
+        <br>
+
+        <!-- UPDATE -->
+        <button id="btnUpdate" type="submit">Spara</button>
+        
+        <br>
+    
+        <!-- DELETE -->
+        <button id="btnDelete" class="button-delete" type="submit">Radera</button>
+    </div>
+
+    <script>
+
+        const btnSearch = document.querySelector('#search');
+        const btnUpdate = document.querySelector('#btnUpdate');
+        const btnDelete = document.querySelector('#btnDelete');
+        
+        btnSearch.addEventListener('click', () => {
+            
+            printResults();
+        });
+
+        // KNAPP: Update
+        btnUpdate.addEventListener('click', () => {
+
+            let customerId = document.querySelector('#customerId');
+            let firstName = document.querySelector('#firstName');
+            let lastName = document.querySelector('#lastName');
+            let email = document.querySelector('#email');
+
+            const options = {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ customerId: customerId.value, firstName: firstName.value, lastName: lastName.value, email: email.value })
+            }
+
+            fetch('http://localhost:3001/customer/edit', options)
+            .then(response => console.log(response))
+            .catch(error => console.error(error));          
+        })
+
+        // KNAPP: Delete
+        btnDelete.addEventListener('click', () => {
+
+            let customerId = document.querySelector('#customerId');
+
+            const options = {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ customerId: customerId.value })
+            }
+
+            fetch('http://localhost:3001/customer/remove', options)
+            .then(response => console.log(response))
+            .catch(error => console.error(error));
+        })
+
+        async function printResults() {
+
+            const ul = document.querySelector('#searchResults');
+
+            let data = await getResultsByKeyword();
+
+            for (const customer of data) {
+                
+                let li = document.createElement('li');
+                let a = document.createElement('a');
+                
+                a.id = customer.customerId;
+                a.innerText = customer.firstName;
+                a.addEventListener('click', () => {
+
+                    ul.innerHTML = '';
+                    
+                    // Fyll i redigeringsformuläret
+                    setCurrentCustomer(customer.customerId, customer.firstName, customer.lastName, customer.email);
+
+                    // Visar redigeringsformuläret
+                    displayUpdate();
+                })
+
+                li.appendChild(a);
+                ul.appendChild(li);
+            }
+        }
+
+        function setCurrentCustomer(customerId, firstName, lastName, email) {
+            document.querySelector('#customerId').value = customerId;
+            document.querySelector('#firstName').value = firstName;
+            document.querySelector('#lastName').value = lastName;
+            document.querySelector('#email').value = email;           
+        }
+
+        function displayUpdate() {
+
+            // Döljer sökformuläret
+            var search = document.querySelector('.search-active');
+            search.className = 'search-inactive';
+
+            // Visar redigeringsformuläret
+            var update = document.querySelector('.update-inactive');
+            update.className = 'update-active';
+        }
+
+        // Hämtar data baserat på sökord
+        async function getResultsByKeyword() {
+
+            let keyword = document.querySelector('#keyword').value;
+
+            const options = {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json'
+            }}
+
+            let response = await fetch('http://localhost:3001/customer/search?' + new URLSearchParams({
+                keyword: keyword
+            }), options)
+            .catch(error => {
+                console.error(error);
+            });
+
+            let data = await response.json();
+            
+            console.log(data)
+
+            return data;
+        };
+
+    </script>
+</body>
+</html>

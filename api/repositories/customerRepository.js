@@ -27,9 +27,9 @@ async function getCustomerByKeyword(keyword) {
     return customers;
 };
 
-async function addCustomer(firstName, lastName, email) {
+async function addCustomer(firstName, lastName) {
 
-    db_context.insertCustomer(firstName, lastName, 'email@email.com');
+    db_context.insertCustomer(firstName, lastName);
 };
 
 async function editCustomer(customerId, firstName, lastName, email) {
@@ -37,9 +37,15 @@ async function editCustomer(customerId, firstName, lastName, email) {
     db_context.updateCustomer(customerId, firstName, lastName, email);
 };
 
+async function deleteCustomer(customerId) {
+
+    db_context.deleteCustomer(customerId);
+};
+
 module.exports = {
     getAllCustomers,
     getCustomerByKeyword,
     addCustomer,
-    editCustomer
+    editCustomer,
+    deleteCustomer
 }

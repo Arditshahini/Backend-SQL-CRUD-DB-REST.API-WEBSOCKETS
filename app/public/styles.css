@@ -90,6 +90,18 @@ button {
     cursor:pointer;
 }
 
+.button-delete {
+    height: 50px;
+    width: calc(33vw + 8px);
+    font-size: 24px;
+    margin: 5px 0px 0px 0px;
+    border-radius: 5px;
+    cursor:pointer;
+    background-color: red;
+    color: white;
+}
+
+
 button:hover {
     background-color: rgb(249, 49, 166);
 }
