@@ -1,11 +1,11 @@
 html {
     font-family: Arial, Helvetica, sans-serif;
     /* background-color:rgb(37, 32, 75); */
-    background-image: url("/background.jpg");
+    background-image: url('/buackground.jpg');
 }
 
-h1, h3 {
-    
+h1,
+h3 {
     color: aliceblue;
 }
 
@@ -13,16 +13,16 @@ label {
     display: block;
     color: aliceblue;
     font-size: 24px;
-    margin:10px 0px 0px 0px;
+    margin: 10px 0px 0px 0px;
 }
 
 a {
-    color:crimson;
+    color: crimson;
     font-size: 24px;
 }
 
 a:hover {
-    color:aquamarine;
+    color: aquamarine;
     cursor: pointer;
     text-decoration: underline;
 }
@@ -32,17 +32,17 @@ p {
 }
 
 .chat-message-box {
-    background-color:gray;
-    height:200px;
+    background-color: gray;
+    height: 200px;
     width: 50vw;
     padding: 10px;
     overflow-y: scroll;
-    border-radius:5px;
+    border-radius: 5px;
 }
 
 .chat-message {
-    background-color:lightgreen;
-    height:50px;
+    background-color: lightgreen;
+    height: 50px;
     width: 30vw;
     margin: 10px;
     padding: 10px;
@@ -58,7 +58,7 @@ p {
 }
 
 .chat-input:hover {
-    background-color:rgb(230, 206, 247);
+    background-color: rgb(230, 206, 247);
 }
 
 .chat-button-send {
@@ -69,7 +69,7 @@ p {
     border-radius: 5px;
 }
 
-input  {
+input {
     height: 50px;
     width: 33vw;
     font-size: 24px;
@@ -78,7 +78,7 @@ input  {
 }
 
 input:hover {
-    background-color:hwb(120 71% 0%);
+    background-color: hwb(120 71% 0%);
 }
 
 button {
@@ -87,7 +87,7 @@ button {
     font-size: 24px;
     margin: 5px 0px 0px 0px;
     border-radius: 5px;
-    cursor:pointer;
+    cursor: pointer;
 }
 
 .button-delete {
@@ -96,18 +96,17 @@ button {
     font-size: 24px;
     margin: 5px 0px 0px 0px;
     border-radius: 5px;
-    cursor:pointer;
+    cursor: pointer;
     background-color: red;
     color: white;
 }
-
 
 button:hover {
     background-color: rgb(249, 49, 166);
 }
 
 .name {
-    background-color:lightgreen;
+    background-color: lightgreen;
 }
 
 .update-active {

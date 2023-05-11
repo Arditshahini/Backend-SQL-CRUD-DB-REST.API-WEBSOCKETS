@@ -1,19 +1,508 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>App - Start</title>
-    <link rel="stylesheet" href="/styles.css"> <!-- HÄMTA CSS-fil -->
-</head>
-<body>
-    <h1>App</h1>
-    <br>
-    <a href="/chat">Chat</a>
-    <br>
-    <a href="/create">Registrera (Create)</a>
-    <br>
-    <a href="/search">Sök och redigera (Read, Update och Delete)</a>
-</body>
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta
+            name="description"
+            content="A front-end template that helps you build fast, modern mobile web apps."
+        />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, minimum-scale=1.0"
+        />
+        <title>Bibliotek</title>
+
+        <!-- Add to homescreen for Chrome on Android -->
+        <meta name="mobile-web-app-capable" content="yes" />
+        <link rel="icon" sizes="192x192" href="images/android-desktop.png" />
+
+        <!-- Add to homescreen for Safari on iOS -->
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <meta
+            name="apple-mobile-web-app-title"
+            content="Material Design Lite"
+        />
+        <link
+            rel="apple-touch-icon-precomposed"
+            href="images/ios-desktop.png"
+        />
+
+        <!-- Tile icon for Win8 (144x144 + tile color) -->
+        <meta
+            name="msapplication-TileImage"
+            content="images/touch/ms-touch-icon-144x144-precomposed.png"
+        />
+        <meta name="msapplication-TileColor" content="#3372DF" />
+
+        <link rel="shortcut icon" href="images/favicon.png" />
+
+        <!-- SEO: If your mobile URL is different from the desktop URL, add a canonical link to the desktop page https://developers.google.com/webmasters/smartphone-sites/feature-phones -->
+        <!--
+    <link rel="canonical" href="http://www.example.com/">
+    -->
+
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en"
+        />
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/icon?family=Material+Icons"
+        />
+        <link rel="stylesheet" href="search.css" />
+
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/icon?family=Material+Icons"
+        />
+        <link
+            rel="stylesheet"
+            href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css"
+        />
+        <script
+            defer
+            src="https://code.getmdl.io/1.3.0/material.min.js"
+        ></script>
+
+        <style>
+            #view-source {
+                position: fixed;
+                display: block;
+                right: 0;
+                bottom: 0;
+                margin-right: 40px;
+                margin-bottom: 40px;
+                z-index: 900;
+            }
+        </style>
+    </head>
+
+    <body
+        class="mdl-demo mdl-color--grey-100 mdl-color-text--grey-700 mdl-base"
+    >
+        <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+            <header
+                class="mdl-layout__header mdl-layout__header--scroll mdl-color--primary"
+            >
+                <div
+                    class="mdl-layout--large-screen-only mdl-layout__header-row"
+                ></div>
+                <div
+                    class="mdl-layout--large-screen-only mdl-layout__header-row"
+                >
+                    <h3>Bibliotek</h3>
+                </div>
+                <div
+                    class="mdl-layout--large-screen-only mdl-layout__header-row"
+                ></div>
+                <div
+                    class="mdl-layout__tab-bar mdl-js-ripple-effect mdl-color--primary-dark"
+                >
+                    <a href="#overview" class="mdl-layout__tab is-active"
+                        >Overview</a
+                    ><a href="/chat" class="mdl-layout__tab is-active">Chat</a>
+
+                    <button
+                        class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-shadow--4dp mdl-color--accent"
+                        id="add"
+                    >
+                        <i class="material-icons" role="presentation">add</i>
+                        <span class="visuallyhidden">Add</span>
+                    </button>
+                </div>
+            </header>
+
+            <dialog class="mdl-dialog">
+                <h4 class="mdl-dialog__title">Add a book</h4>
+                <div class="mdl-dialog__content">
+                    <p>
+                        <label for="author">Author</label>
+                        <input id="author" type="text" name="author" />
+                    </p>
+                    <p>
+                        <label for="title">Titel</label>
+                        <input id="title" type="text" name="title" />
+                    </p>
+                    <p>
+                        <label for="genre">Genre</label>
+                        <input id="genre" type="text" name="genre" />
+                    </p>
+                    <p>
+                        <label for="year">Year</label>
+                        <input id="year" type="text" name="year" />
+                    </p>
+                </div>
+                <div class="mdl-dialog__actions">
+                    <button id="btnSave" type="button" class="mdl-button">
+                        Save
+                    </button>
+                    <button type="button" class="mdl-button close">
+                        Close
+                    </button>
+                </div>
+            </dialog>
+
+            <main style="padding-bottom: 40px" class="mdl-layout__content">
+                <section class="section--center mdl-grid mdl-grid--no-spacing">
+                    <div style="margin-top: 40px">
+                        <form action="#">
+                            <div class="mdl-textfield mdl-js-textfield">
+                                <input
+                                    id="keyword"
+                                    class="mdl-textfield__input"
+                                    type="text"
+                                    id="sample1"
+                                />
+                                <label
+                                    class="mdl-textfield__label"
+                                    for="sample1"
+                                    >Search for book...</label
+                                >
+                            </div>
+
+                            <!-- Colored raised button -->
+                            <button
+                                id="search"
+                                class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
+                            >
+                                Search
+                            </button>
+                        </form>
+                    </div>
+
+                    <table
+                        style="width: 100%"
+                        class="mdl-data-table mdl-js-data-table mdl-shadow--2dp"
+                    >
+                        <thead>
+                            <tr>
+                                <th class="mdl-data-table__cell--non-numeric">
+                                    BookId
+                                </th>
+                                <th>Author</th>
+                                <th>Title</th>
+                                <th>Genre</th>
+                                <th>Year</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="result"></tbody>
+                    </table>
+
+                    <!-- Redigeringsformulär -->
+                    <div style="display: none" class="update-inactive">
+                        <input
+                            id="customerId"
+                            type="hidden"
+                            name="customerId"
+                        />
+
+                        <label for="firstName">Förnamn</label>
+                        <input
+                            id="firstName"
+                            type="text"
+                            name="firstName"
+                            autofocus
+                        />
+
+                        <label for="lastName">Efternamn</label>
+                        <input id="lastName" type="text" name="lastName" />
+
+                        <label for="email">E-mail</label>
+                        <input id="email" type="text" name="email" />
+
+                        <br />
+
+                        <!-- UPDATE -->
+                        <button id="btnUpdate" type="submit">Spara</button>
+
+                        <br />
+
+                        <!-- DELETE -->
+                        <button
+                            id="btnDelete"
+                            class="button-delete"
+                            type="submit"
+                        >
+                            Radera
+                        </button>
+                    </div>
+                </section>
+            </main>
+        </div>
+        <script>
+            var isUpdate = false
+            // function to display books
+            function displayTable(books) {
+                const result = document.querySelector('#result')
+
+                result.innerHTML = ''
+
+                books.forEach((book) => {
+                    const tr = document.createElement('tr')
+
+                    tr.innerHTML = `
+	                    <td>${book.bookId}</td>
+	                    <td>${book.author}</td>
+	                    <td>${book.title}</td>
+	                    <td>${book.genre}</td>
+	                    <td>${book.year}</td>
+                        <td>
+                            <button onclick="deleteBook(${book.bookId})" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                            X
+                            </button>
+                        </td>
+
+                        <td>
+                            <button onclick="editBook(${book.bookId},'${book.author}','${book.title}','${book.genre}','${book.year}'  )"  class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                            Edit
+                            </button>
+
+                        </td>
+	                `
+                    result.appendChild(tr)
+                })
+            }
+
+            const btnSearch = document.querySelector('#search')
+            const btnUpdate = document.querySelector('#btnUpdate')
+            const btnDelete = document.querySelector('#btnDelete')
+
+            var dialog = document.querySelector('dialog')
+            var addButton = document.querySelector('#add')
+            if (!dialog.showModal) {
+                dialogPolyfill.registerDialog(dialog)
+            }
+            addButton.addEventListener('click', function () {
+                isUpdate = false
+
+                author.value = ''
+                title.value = ''
+                genre.value = ''
+                year.value = ''
+
+                dialog.showModal()
+            })
+            dialog
+                .querySelector('.close')
+                .addEventListener('click', function () {
+                    dialog.close()
+                })
+
+            var btnSave = document.querySelector('#btnSave')
+            var author = document.querySelector('#author')
+            var title = document.querySelector('#title')
+            var genre = document.querySelector('#genre')
+            var year = document.querySelector('#year')
+
+            btnSave.addEventListener('click', () => {
+                if (isUpdate) {
+                    const options = {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            bookId: isUpdate,
+                            author: author.value,
+                            title: title.value,
+                            genre: genre.value,
+                            year: year.value
+                        })
+                    }
+                    fetch('http://localhost:3001/books/edit', options)
+                        .then((response) => console.log(response))
+                        .then(() => {
+                            dialog.close()
+                            alert('Book added successfuly!')
+                        })
+                        .then(() => fetchData())
+
+                        .catch((error) => {
+                            console.error(error)
+                        })
+                } else {
+                    const options = {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            author: author.value,
+                            title: title.value,
+                            genre: genre.value,
+                            year: year.value
+                        })
+                    }
+                    fetch('http://localhost:3001/books/add', options)
+                        .then((response) => console.log(response))
+                        .then(() => {
+                            dialog.close()
+                            alert('Book updated successfuly!')
+                        })
+
+                        .then(() => fetchData())
+
+                        .catch((error) => {
+                            console.error(error)
+                        })
+                }
+            })
+
+            btnSearch.addEventListener('click', () => {
+                printResults()
+            })
+
+            function editBook(
+                bookId,
+                bookAuthor,
+                bookTitle,
+                bookGenre,
+                bookYear
+                
+            ) {
+                isUpdate = bookId
+
+                author.value = bookAuthor
+                title.value = bookTitle
+                genre.value = bookGenre
+                year.value = bookYear
+
+                dialog.showModal()
+            }
+
+            function deleteBook(bookId) {
+                const options = {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ bookId: bookId })
+                }
+                fetch('http://localhost:3001/books/remove', options)
+                    .then((response) => console.log(response))
+                    .then(() => alert('Book deleted successfuly!'))
+                    .then(() => fetchData())
+                    .catch((error) => {
+                        console.error(error)
+                    })
+            }
+
+            async function fetchData() {
+                let response = await fetch(
+                    'http://localhost:3001/books/all'
+                ).catch((error) => {
+                    console.error(error)
+                })
+
+                let books = await response.json()
+                displayTable(books)
+            }
+
+            window.onload = async function () {
+                fetchData()
+            }
+
+
+            btnUpdate.addEventListener('click', () => {
+                let bookId = document.querySelector('#bookId')
+                let author = document.querySelector('#author')
+                let title = document.querySelector('#title')
+                let genre = document.querySelector('#genre')
+                let year = document.querySelector('#year')
+
+                const options = {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        bookId: bookId.value,
+                        author: author.value,
+                        title: title.value,
+                        genre: genre.value,
+                        year: year.value
+                    })
+                }
+
+                fetch('http://localhost:3001/books/edit', options)
+                    .then((response) => console.log(response))
+                    .catch((error) => console.error(error))
+            })
+
+
+            btnDelete.addEventListener('click', () => {
+                let bookId = document.querySelector('#bookId')
+
+                const options = {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ bookId: bookId.value })
+                }
+
+                fetch('http://localhost:3001/books/remove', options)
+                    .then((response) => console.log(response))
+                    .catch((error) => console.error(error))
+            })
+
+            async function printResults() {
+                const ul = document.querySelector('#searchResults')
+
+                let books = await getResultsByKeyword()
+
+                displayTable(books)
+            }
+
+            function setCurrentBook(bookId, author, title, genre, year) {
+                document.querySelector('#bookId').value = bookId
+                document.querySelector('#author').value = author
+                document.querySelector('#title').value = title
+                document.querySelector('#genre').value = genre
+                document.querySelector('#year').value = year
+            }
+
+            function displayUpdate() {
+
+                var search = document.querySelector('.search-active')
+                search.className = 'search-inactive'
+
+
+                var update = document.querySelector('.update-inactive')
+                update.className = 'update-active'
+            }
+
+
+            async function getResultsByKeyword() {
+                let keyword = document.querySelector('#keyword').value
+
+                const options = {
+                    method: 'GET',
+                    headers: {
+                        Accept: 'application/json'
+                    }
+                }
+
+                let response = await fetch(
+                    'http://localhost:3001/books/search?' +
+                        new URLSearchParams({
+                            keyword: keyword
+                        }),
+                    options
+                ).catch((error) => {
+                    console.error(error)
+                })
+
+                let data = await response.json()
+
+                console.log(data)
+
+                return data
+            }
+        </script>
+    </body>
 </html>
