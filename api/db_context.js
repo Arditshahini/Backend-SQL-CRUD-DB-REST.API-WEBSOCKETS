@@ -24,7 +24,8 @@ async function updateBook(bookId, author, title, genre, year) {
 
 async function selectBookByKeyword(keyword) {
     let data = await db.any(
-        `SELECT * FROM books WHERE author LIKE '%${keyword}%'`
+        `SELECT * FROM books WHERE author LIKE '%${keyword}%'
+        OR title LIKE '%${keyword}%';`
     )
 
     return data
